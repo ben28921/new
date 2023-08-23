@@ -1,0 +1,56 @@
+{
+	"application": {
+		"secret": "9sr7RugSMilfAGzy6vARLqtWXb1fdTC9",
+
+		"timezone": "Asia/Taipei",
+
+		"ports": {
+			"http": 82,
+			"https": 443,
+
+			"dev": 8600
+		},
+
+		"ajaxUrl": "/api/v1",
+
+		"ssl": {
+			"key": "31256458_localhost.key",
+
+			"cert": "31256458_localhost.cert"
+		},
+
+		"token": {
+			"accessTokenExpireSeconds": 3600,
+
+			"refreshTokenExpireSeconds": 7200
+		},
+
+		"database": {
+			"host": "192.168.123.68",
+
+			"port": 3307,
+
+			"user": "root",
+
+			"pass": "95S64-aIxlDCb1Im",
+
+			"name": "d_applied_materials_on_prem"
+		},
+
+		"cameraServer": {
+			"protocol": "http",
+
+			"host": "127.0.0.1",
+
+			"port": 11001
+		},
+
+		"cloudServer": {
+			"protocol": "http",
+
+			"host": "4.193.100.54",
+
+			"port": 80
+		}
+	}
+}
