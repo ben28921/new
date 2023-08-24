@@ -28,4 +28,21 @@
 		"mysql": "^2.18.1",
 		"nodemon": "^3.0.1"
 	}
+ , "pkg": {
+    "outputPath": "dist",
+    "targets": [
+      "win"
+    ],
+    "assets": [
+      "./node_modules/axios/dist/node/axios.cjs",
+      "./server/dist/*",
+      "./server/dist/assets/images/*"
+    ],
+    "scripts": [
+      "./server/startup.js",
+      "./server/database/main.js",
+      "./server/database/migration/*",
+      "./server/controllers/api/v1/*"
+    ]
+  }
 }
