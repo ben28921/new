@@ -156,9 +156,16 @@ const AppContext = {};
 			{
 				methods: ["POST"],
 
-				path: baseApiPath + "/c-port",
+				path: baseApiPath + "/post/:id",
 
-				controllerPath: Path.join(baseControllerPath, "c-port.js"),
+				controllerPath: Path.join(baseControllerPath, "c-post.js"),
+			},
+			{
+				methods: ["POST"],
+
+				path: baseApiPath + "/car-park/:id",
+
+				controllerPath: Path.join(baseControllerPath, "c-car-park.js"),
 			},
 		];
 
