@@ -42,7 +42,7 @@ const generateTokens = async (input) => {
 
 		.where("r_id", input.userId)
 
-		.whereNull("r_deleted_at")
+		// .whereNull("r_deleted_at")
 
 		.first();
 
@@ -132,9 +132,9 @@ module.exports = {
 			});
 
 			const user = await knex
-				.table("t_admins")
+				.table("t_users")
 				.where("r_username", input.f_username)
-				.whereNull("r_deleted_at")
+				// .whereNull("r_deleted_at")
 				.first();
 
 			if (typeof user === "undefined") {

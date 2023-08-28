@@ -87,6 +87,8 @@ module.exports = async (ctx) => {
 		await transaction.table("t_test").insert({
 			r_test: input.f_test,
 			r_test2: input.f_test2,
+			r_test3: input.f_test3,
+			r_test4: input.f_test4,
 		});
 
 		result = {

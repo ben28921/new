@@ -139,6 +139,21 @@ const AppContext = {};
 	});
 
 	jobs.push((next) => {
+		// load updater
+		//const dbUpdater = require(Path.join(__dirname, 'database', 'main.js'));
+		const dbUpdater = require("./database/main.js");
+
+		// do update
+		dbUpdater
+
+			.doUpdate(AppContext)
+
+			.then(() => next(undefined));
+
+		//.catch(err => next(err));
+	});
+
+	jobs.push((next) => {
 		//base api path
 		const baseApiPath = "/api/v1";
 
@@ -146,6 +161,41 @@ const AppContext = {};
 
 		//routes
 		const routes = [
+			{
+				methods: ["GET"],
+
+				path: baseApiPath + "/ticket",
+
+				controllerPath: Path.join(baseControllerPath, "r-ticket.js"),
+			},
+			{
+				methods: ["GET"],
+
+				path: baseApiPath + "/users/:id",
+
+				controllerPath: Path.join(baseControllerPath, "r-users.js"),
+			},
+			{
+				methods: ["POST"],
+
+				path: baseApiPath + "/users",
+
+				controllerPath: Path.join(baseControllerPath, "c-users.js"),
+			},
+			{
+				methods: ["PATCH"],
+
+				path: baseApiPath + "/users/:id",
+
+				controllerPath: Path.join(baseControllerPath, "u-users.js"),
+			},
+			{
+				methods: ["DELETE"],
+
+				path: baseApiPath + "/users/:id",
+
+				controllerPath: Path.join(baseControllerPath, "d-users.js"),
+			},
 			{
 				methods: ["POST"],
 
@@ -156,9 +206,9 @@ const AppContext = {};
 			{
 				methods: ["POST"],
 
-				path: baseApiPath + "/post/:id",
+				path: baseApiPath + "/ticket/:id",
 
-				controllerPath: Path.join(baseControllerPath, "c-post.js"),
+				controllerPath: Path.join(baseControllerPath, "c-ticket.js"),
 			},
 			{
 				methods: ["POST"],
