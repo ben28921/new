@@ -93,16 +93,68 @@ module.exports = async (ctx) => {
 		if (tokenIsError.indexOf(true) !== -1) {
 			throw new Error("invalid token");
 		}
+		let a;
+		// console.log(id);
+		const user_with_id = await knex
+			.table("t_users")
+			.where("r_id", params.id)
+			.whereNull("r_deleted_at")
+			.first();
+		console.log(user_with_id);
+		if (typeof user_with_id === "undefined") {
+			throw new Error("User ID Not Exist");
+		}
+		// console.log(user);
+		// console.log("user", user.r_username);
+		// if (user.r_username === input.username) {
+		// }
+		const datas = { r_updated_at: new Date() };
 
-		const password = Crypto.createHmac("sha512", config.application.secret)
-			.update(input.password)
-			.digest("hex");
+		if (input.hasOwnProperty("username")) {
+			const userNameCount = await knex
+				.table("t_users")
+				.where("r_username", input.username)
+				.whereNot("r_id", params.id)
+				.count("r_id", { as: "r_total" })
+				.then((r) => r[0].r_total);
+			console.log(userNameCount);
+			if (userNameCount > 0) {
+				throw new Error("Username exist");
+			}
+			datas.r_username = input.username;
+		}
+		if (input.hasOwnProperty("password")) {
+			const password = Crypto.createHmac("sha512", config.application.secret)
+				.update(input.password)
+				.digest("hex");
+			datas.r_password = password;
+		}
 
-		await transaction.table("t_users").where("r_id", params.id).update({
-			r_username: input.username,
-			r_password: password,
-		});
+		await transaction.table("t_users").where("r_id", params.id).update(datas);
 
+		// if (
+		// 	input.hasOwnProperty("f_username") &&
+		// 	input.hasOwnProperty("f_password")
+		// ) {
+		// 	const password = Crypto.createHmac("sha512", config.application.secret)
+		// 		.update(input.password)
+		// 		.digest("hex");
+		// 	a = await transaction.table("t_users").where("r_id", params.id).update({
+		// 		r_username: input.username,
+		// 		r_password: password,
+		// 		r_updated_at: new Date(),
+		// 	});
+		// } else if (input.hasOwnProperty("f_username")) {
+		// 	a = await transaction.table("t_users").where("r_id", params.id).update({
+		// 		r_username: input.username,
+		// 		r_updated_at: new Date(),
+		// 	});
+		// } else {
+		// 	a = await transaction.table("t_users").where("r_id", params.id).update({
+		// 		r_password: password,
+		// 		r_updated_at: new Date(),
+		// 	});
+		// }
 		// add to result
 		result = {
 			...result,

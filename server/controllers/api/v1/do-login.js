@@ -38,7 +38,7 @@ const generateTokens = async (input) => {
 		config.application.token.refreshTokenExpireSeconds;
 
 	const user = await knex
-		.table("t_admins")
+		.table("t_users")
 
 		.where("r_id", input.userId)
 

@@ -24,7 +24,7 @@ module.exports = async (ctx) => {
 	// config
 	let config = ctx.config;
 
-	// bunyan
+	// bunya
 	let log = ctx.log;
 
 	// knex
@@ -45,27 +45,28 @@ module.exports = async (ctx) => {
 		// input
 		let input = {
 			// query
-			// ...(ctx.request.query || {}),
+			...(ctx.request.query || {}),
 
 			// body
 			...(ctx.request.body || {}),
 		};
 
 		// validate url id
-		Validator.validate(params, {});
+		Validator.validate(params, {
+			id: {
+				optional: true,
+				type: ["string", "number"],
+				regex: /^[1-9][0-9]*$/,
+			},
+		});
 
 		//console.log(input.f_sort_by);
 
 		// validate
 		Validator.validate(input, {
-			username: {
-				optional: false,
+			f_name: {
+				optional: true,
 				type: ["string", "number"],
-			},
-			password: {
-				optional: false,
-				type: ["string", "number"],
-				regex: /^[0-9]*$/,
 			},
 		});
 
@@ -88,24 +89,9 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
-		const userNameCount = await knex
-			.table("t_users")
-			.where("r_username", input.username)
-			.count("r_id", { as: "r_total" })
-			.then((r) => r[0].r_total);
-		console.log(userNameCount);
-		if (userNameCount > 0) {
-			throw new Error("Username exist");
-		}
-
-		const password = Crypto.createHmac("sha512", config.application.secret)
-			.update(input.password)
-			.digest("hex");
-
-		await transaction.table("t_users").insert({
-			r_username: input.username,
-			r_password: password,
-			r_created_at: new Date(),
+		await transaction.table("t_roles").where("r_id", params.id).update({
+			r_name: input.f_name,
+			r_updated_at: new Date(),
 		});
 
 		// add to result

@@ -31,9 +31,8 @@ module.exports = async (ctx) => {
 	let knex = ctx.knex;
 
 	// knex transaction
-	// let transaction = undefined; // await knex.transaction();
+	let transaction = undefined; // await knex.transaction();
 
-	let transaction = await knex.transaction();
 	// main workflow
 	try {
 		// token
@@ -45,29 +44,25 @@ module.exports = async (ctx) => {
 		// input
 		let input = {
 			// query
-			// ...(ctx.request.query || {}),
+			...(ctx.request.query || {}),
 
 			// body
-			...(ctx.request.body || {}),
+			//...(ctx.request.body || {})
 		};
 
 		// validate url id
-		Validator.validate(params, {});
+		Validator.validate(params, {
+			id: {
+				optional: true,
+				type: ["string", "number"],
+				regex: /^[1-9][0-9]*$/,
+			},
+		});
 
 		//console.log(input.f_sort_by);
 
 		// validate
-		Validator.validate(input, {
-			username: {
-				optional: false,
-				type: ["string", "number"],
-			},
-			password: {
-				optional: false,
-				type: ["string", "number"],
-				regex: /^[0-9]*$/,
-			},
-		});
+		Validator.validate(input, {});
 
 		// verify token
 		//const tokenData = Jwt.verify(token, config.application.secret);
@@ -88,29 +83,18 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
-		const userNameCount = await knex
-			.table("t_users")
-			.where("r_username", input.username)
-			.count("r_id", { as: "r_total" })
-			.then((r) => r[0].r_total);
-		console.log(userNameCount);
-		if (userNameCount > 0) {
-			throw new Error("Username exist");
-		}
-
-		const password = Crypto.createHmac("sha512", config.application.secret)
-			.update(input.password)
-			.digest("hex");
-
-		await transaction.table("t_users").insert({
-			r_username: input.username,
-			r_password: password,
-			r_created_at: new Date(),
-		});
+		const users = await knex
+			.table("t_roles")
+			.select("*")
+			.where("r_id", params.id)
+			.whereNull("r_deleted_at")
+			.first();
 
 		// add to result
 		result = {
 			...result,
+
+			users,
 		};
 
 		// commit

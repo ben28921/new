@@ -176,6 +176,69 @@ const AppContext = {};
 				controllerPath: Path.join(baseControllerPath, "r-users.js"),
 			},
 			{
+				methods: ["GET"],
+
+				path: baseApiPath + "/users",
+
+				controllerPath: Path.join(baseControllerPath, "r-users.js"),
+			},
+			{
+				methods: ["GET"],
+
+				path: baseApiPath + "/permissions/:id",
+
+				controllerPath: Path.join(baseControllerPath, "r-permissions.js"),
+			},
+			{
+				methods: ["POST"],
+
+				path: baseApiPath + "/permissions",
+
+				controllerPath: Path.join(baseControllerPath, "c-permissions.js"),
+			},
+			{
+				methods: ["PATCH"],
+
+				path: baseApiPath + "/permissions/:id",
+
+				controllerPath: Path.join(baseControllerPath, "u-permissions.js"),
+			},
+			{
+				methods: ["DELETE"],
+
+				path: baseApiPath + "/permissions/:id",
+
+				controllerPath: Path.join(baseControllerPath, "d-permissions.js"),
+			},
+			{
+				methods: ["GET"],
+
+				path: baseApiPath + "/roles/:id",
+
+				controllerPath: Path.join(baseControllerPath, "r-roles.js"),
+			},
+			{
+				methods: ["POST"],
+
+				path: baseApiPath + "/roles",
+
+				controllerPath: Path.join(baseControllerPath, "c-roles.js"),
+			},
+			{
+				methods: ["PATCH"],
+
+				path: baseApiPath + "/roles/:id",
+
+				controllerPath: Path.join(baseControllerPath, "u-roles.js"),
+			},
+			{
+				methods: ["DELETE"],
+
+				path: baseApiPath + "/roles/:id",
+
+				controllerPath: Path.join(baseControllerPath, "d-roles.js"),
+			},
+			{
 				methods: ["POST"],
 
 				path: baseApiPath + "/users",

@@ -58,14 +58,9 @@ module.exports = async (ctx) => {
 
 		// validate
 		Validator.validate(input, {
-			username: {
-				optional: false,
+			f_name: {
+				optional: true,
 				type: ["string", "number"],
-			},
-			password: {
-				optional: false,
-				type: ["string", "number"],
-				regex: /^[0-9]*$/,
 			},
 		});
 
@@ -88,23 +83,8 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
-		const userNameCount = await knex
-			.table("t_users")
-			.where("r_username", input.username)
-			.count("r_id", { as: "r_total" })
-			.then((r) => r[0].r_total);
-		console.log(userNameCount);
-		if (userNameCount > 0) {
-			throw new Error("Username exist");
-		}
-
-		const password = Crypto.createHmac("sha512", config.application.secret)
-			.update(input.password)
-			.digest("hex");
-
-		await transaction.table("t_users").insert({
-			r_username: input.username,
-			r_password: password,
+		await transaction.table("t_permissions").insert({
+			r_name: input.f_name,
 			r_created_at: new Date(),
 		});
 

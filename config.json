@@ -20,9 +20,9 @@
 		},
 
 		"token": {
-			"accessTokenExpireSeconds": 3600,
+			"accessTokenExpireSeconds": 36000,
 
-			"refreshTokenExpireSeconds": 7200
+			"refreshTokenExpireSeconds": 72000
 		},
 
 		"database": {

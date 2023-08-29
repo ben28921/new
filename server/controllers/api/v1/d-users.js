@@ -84,6 +84,15 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
+		const user_with_id = await knex
+			.table("t_users")
+			.where("r_id", params.id)
+			.whereNull("r_deleted_at")
+			.first();
+		console.log(user_with_id);
+		if (typeof user_with_id === "undefined") {
+			throw new Error("User ID Not Exist");
+		}
 		await transaction.table("t_users").where("r_id", params.id).update({
 			r_deleted_at: new Date(),
 		});
