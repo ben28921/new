@@ -169,16 +169,30 @@ const AppContext = {};
 				controllerPath: Path.join(baseControllerPath, "r-ticket.js"),
 			},
 			{
+				methods: ["POST"],
+
+				path: baseApiPath + "/ticket/:id",
+
+				controllerPath: Path.join(baseControllerPath, "c-ticket.js"),
+			},
+			{
 				methods: ["GET"],
 
-				path: baseApiPath + "/users/:id",
+				path: baseApiPath + "/roles-permissions",
+
+				controllerPath: Path.join(baseControllerPath, "r-roles_permissions.js"),
+			},
+			{
+				methods: ["GET"],
+
+				path: baseApiPath + "/users",
 
 				controllerPath: Path.join(baseControllerPath, "r-users.js"),
 			},
 			{
 				methods: ["GET"],
 
-				path: baseApiPath + "/users",
+				path: baseApiPath + "/users/:id",
 
 				controllerPath: Path.join(baseControllerPath, "r-users.js"),
 			},
@@ -265,13 +279,6 @@ const AppContext = {};
 				path: baseApiPath + "/do-login",
 
 				controllerPath: Path.join(baseControllerPath, "do-login.js"),
-			},
-			{
-				methods: ["POST"],
-
-				path: baseApiPath + "/ticket/:id",
-
-				controllerPath: Path.join(baseControllerPath, "c-ticket.js"),
 			},
 			{
 				methods: ["POST"],

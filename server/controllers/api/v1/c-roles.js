@@ -83,6 +83,15 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
+		const roleNameCount = await knex
+			.table("t_roles")
+			.where("r_name", input.f_name)
+			.count("r_id", { as: "r_total" })
+			.then((r) => r[0].r_total);
+		if (roleNameCount > 0) {
+			throw new Error("Role exist");
+		}
+
 		await transaction.table("t_roles").insert({
 			r_name: input.f_name,
 			r_created_at: new Date(),

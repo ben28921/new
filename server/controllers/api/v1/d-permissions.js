@@ -84,6 +84,14 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
+		const permissions_with_id = await knex
+			.table("t_permissions")
+			.where("r_id", params.id)
+			.whereNull("r_deleted_at")
+			.first();
+		if (typeof user_with_id === "undefined") {
+			throw new Error("Permissions ID Not Exist");
+		}
 		await transaction.table("t_permissions").where("r_id", params.id).update({
 			r_deleted_at: new Date(),
 		});

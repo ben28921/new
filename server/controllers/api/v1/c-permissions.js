@@ -83,6 +83,15 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
+		const permissionNameCount = await knex
+			.table("t_permissions")
+			.where("r_name", input.f_name)
+			.count("r_id", { as: "r_total" })
+			.then((r) => r[0].r_total);
+		if (permissionNameCount > 0) {
+			throw new Error("Permissions exist");
+		}
+
 		await transaction.table("t_permissions").insert({
 			r_name: input.f_name,
 			r_created_at: new Date(),

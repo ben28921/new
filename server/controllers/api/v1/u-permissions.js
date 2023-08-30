@@ -89,10 +89,38 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
-		await transaction.table("t_permissions").where("r_id", params.id).update({
-			r_name: input.f_name,
-			r_updated_at: new Date(),
-		});
+		const datas = { r_updated_at: new Date() };
+
+		const role_with_id = await knex
+			.table("t_permissions")
+			.where("r_id", params.id)
+			.whereNull("r_deleted_at")
+			.first();
+		if (typeof role_with_id === "undefined") {
+			throw new Error("PERMISSION ID Not Exist");
+		}
+
+		console.log(input.f_name);
+		if (input.hasOwnProperty("f_name")) {
+			const roleNameCount = await knex
+				.table("t_permissions")
+				.where("r_name", input.f_name)
+				.whereNot("r_id", params.id)
+				.count("r_id", { as: "r_total" })
+				.then((r) => r[0].r_total);
+			if (roleNameCount > 0) {
+				throw new Error("Name exist");
+			}
+			datas.r_name = input.f_name;
+		}
+		await transaction
+			.table("t_permissions")
+			.where("r_id", params.id)
+			.update(datas);
+		// await transaction.table("t_permissions").where("r_id", params.id).update({
+		// 	r_name: input.f_name,
+		// 	r_updated_at: new Date(),
+		// });
 
 		// add to result
 		result = {

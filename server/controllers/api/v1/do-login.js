@@ -53,7 +53,7 @@ const generateTokens = async (input) => {
 	const accessToken = await new Jose.SignJWT({
 		id: user.r_id,
 
-		username: user.r_username,
+		username: user.r_name,
 
 		type: "ACCESS_TOKEN",
 
@@ -71,7 +71,7 @@ const generateTokens = async (input) => {
 	const refreshToken = await new Jose.SignJWT({
 		id: user.r_id,
 
-		username: user.r_username,
+		username: user.r_name,
 
 		type: "REFRESH_TOKEN",
 
@@ -133,7 +133,7 @@ module.exports = {
 
 			const user = await knex
 				.table("t_users")
-				.where("r_username", input.f_username)
+				.where("r_name", input.f_username)
 				// .whereNull("r_deleted_at")
 				.first();
 

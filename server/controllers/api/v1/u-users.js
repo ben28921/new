@@ -93,7 +93,6 @@ module.exports = async (ctx) => {
 		if (tokenIsError.indexOf(true) !== -1) {
 			throw new Error("invalid token");
 		}
-		let a;
 		// console.log(id);
 		const user_with_id = await knex
 			.table("t_users")
@@ -117,7 +116,6 @@ module.exports = async (ctx) => {
 				.whereNot("r_id", params.id)
 				.count("r_id", { as: "r_total" })
 				.then((r) => r[0].r_total);
-			console.log(userNameCount);
 			if (userNameCount > 0) {
 				throw new Error("Username exist");
 			}
@@ -132,30 +130,6 @@ module.exports = async (ctx) => {
 
 		await transaction.table("t_users").where("r_id", params.id).update(datas);
 
-		// if (
-		// 	input.hasOwnProperty("f_username") &&
-		// 	input.hasOwnProperty("f_password")
-		// ) {
-		// 	const password = Crypto.createHmac("sha512", config.application.secret)
-		// 		.update(input.password)
-		// 		.digest("hex");
-		// 	a = await transaction.table("t_users").where("r_id", params.id).update({
-		// 		r_username: input.username,
-		// 		r_password: password,
-		// 		r_updated_at: new Date(),
-		// 	});
-		// } else if (input.hasOwnProperty("f_username")) {
-		// 	a = await transaction.table("t_users").where("r_id", params.id).update({
-		// 		r_username: input.username,
-		// 		r_updated_at: new Date(),
-		// 	});
-		// } else {
-		// 	a = await transaction.table("t_users").where("r_id", params.id).update({
-		// 		r_password: password,
-		// 		r_updated_at: new Date(),
-		// 	});
-		// }
-		// add to result
 		result = {
 			...result,
 		};

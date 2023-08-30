@@ -90,7 +90,7 @@ module.exports = async (ctx) => {
 
 		const userNameCount = await knex
 			.table("t_users")
-			.where("r_username", input.username)
+			.where("r_name", input.username)
 			.count("r_id", { as: "r_total" })
 			.then((r) => r[0].r_total);
 		console.log(userNameCount);
@@ -103,7 +103,7 @@ module.exports = async (ctx) => {
 			.digest("hex");
 
 		await transaction.table("t_users").insert({
-			r_username: input.username,
+			r_name: input.username,
 			r_password: password,
 			r_created_at: new Date(),
 		});

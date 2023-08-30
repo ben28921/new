@@ -83,18 +83,25 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
-		const users = await knex
-			.table("t_roles")
-			.select("*")
-			.where("r_id", params.id)
-			.whereNull("r_deleted_at")
-			.first();
+		let roles;
+		if (params.hasOwnProperty("id")) {
+			roles = await knex
+				.table("t_roles")
+				.select("*")
+				.where("r_id", params.id)
+				.whereNull("r_deleted_at")
+				.first();
+
+			if (typeof roles === "undefined") {
+				throw new Error("Role id not exist");
+			}
+		}
 
 		// add to result
 		result = {
 			...result,
 
-			users,
+			roles,
 		};
 
 		// commit

@@ -120,7 +120,7 @@ const generateTokens = async (input) => {
 	const accessToken = await new Jose.SignJWT({
 		id: user.r_id,
 
-		username: user.r_username,
+		username: user.r_name,
 
 		type: "ACCESS_TOKEN",
 
