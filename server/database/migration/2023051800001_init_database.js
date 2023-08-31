@@ -52,7 +52,7 @@ module.exports.update = async (ctx) => {
 
 			t.string("r_title", 50).notNullable();
 
-			t.string("r_user", 50).notNullable();
+			t.integer("r_user_id", 50).notNullable();
 
 			t.string("r_msg", 500).notNullable();
 

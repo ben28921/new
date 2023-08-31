@@ -204,6 +204,13 @@ const AppContext = {};
 				controllerPath: Path.join(baseControllerPath, "r-roles_permissions.js"),
 			},
 			{
+				methods: ["POST"],
+
+				path: baseApiPath + "/roles-permissions",
+
+				controllerPath: Path.join(baseControllerPath, "c-roles_permissions.js"),
+			},
+			{
 				methods: ["GET"],
 
 				path: baseApiPath + "/users",

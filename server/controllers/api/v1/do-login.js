@@ -109,16 +109,6 @@ const generateTokens = async (input) => {
 	};
 };
 
-/**
- * @api {post} /do-login login
- * @apiDescription login
- * @apiName login
- * @apiGroup do
- * @apiPermission POST /do-login
- *
- * @apiParam {string} email email
- * @apiParam {string} password password
- */
 module.exports = {
 	generateTokens: generateTokens,
 

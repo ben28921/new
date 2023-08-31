@@ -155,10 +155,7 @@ module.exports.update = async (ctx) => {
 					r_role_id: 1,
 					r_permission_id: 1,
 				},
-				{
-					r_role_id: 2,
-					r_permission_id: 1,
-				},
+
 				{
 					r_role_id: 2,
 					r_permission_id: 1,
