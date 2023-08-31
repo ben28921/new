@@ -46,9 +46,23 @@ const generateTokens = async (input) => {
 
 		.first();
 
-	let permission = [];
+	console.log(user);
 
-	permission = [...new Set(permission)];
+	const roles_permissions = await knex
+		.table("t_roles_permissions")
+		.where("r_role_id", user.r_role_id);
+	console.log(roles_permissions);
+
+	const permissions = await knex.table("t_permissions").whereIn(
+		"r_id",
+		roles_permissions.map((obj) => obj.r_permission_id)
+	);
+
+	console.log(permissions);
+
+	// let permission = [];
+
+	// permission = [...new Set(permission)];
 
 	const accessToken = await new Jose.SignJWT({
 		id: user.r_id,
@@ -61,7 +75,7 @@ const generateTokens = async (input) => {
 
 		email: user.r_email,
 
-		scopes: permission,
+		permissions: permissions.map((obj) => obj.r_name),
 
 		exp: Math.floor(Date.now() / 1000) + accessTokenExpireSeconds,
 	})
@@ -79,7 +93,7 @@ const generateTokens = async (input) => {
 
 		email: user.r_email,
 
-		scopes: permission,
+		permissions: permissions.map((obj) => obj.r_name),
 
 		exp: Math.floor(Date.now() / 1000) + refreshTokenExpireSeconds,
 	})

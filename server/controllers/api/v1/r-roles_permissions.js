@@ -101,57 +101,66 @@ module.exports = async (ctx) => {
 		// 		.whereNull("r_deleted_at");
 		// }
 
-		let permissions = await knex
+		let roles = await knex
 			.table("t_roles")
-			.join(
-				"t_roles_permissions",
-				"t_roles.r_id",
-				"=",
-				"t_roles_permissions.r_role_id"
-			)
+			.select("t_roles.r_id", "t_roles.r_name");
+
+		// console.log(typeof permissions);
+
+		const roleIds = roles.map((o) => o.r_id);
+		const t_role_permission = await knex
+			.table("t_roles_permissions")
 			.join(
 				"t_permissions",
 				"t_permissions.r_id",
 				"=",
 				"t_roles_permissions.r_permission_id"
 			)
-			.select("t_roles.r_name as role  ", "t_permissions.r_name as permission");
+			.whereIn("t_roles_permissions.r_role_id", roleIds)
+			.select("t_roles_permissions.r_role_id", "t_permissions.r_name");
 
-		// console.log(typeof permissions);
-		// console.log(permissions);
+		roles.forEach((element) => {
+			const { r_id, r_name } = element;
+			element.permissions = t_role_permission
+				.filter((ele) => ele.r_role_id == r_id)
+				.map((o) => o.r_name);
+		});
+		// console.log(JSON.stringify(roles));
+
 		// permissions.forEach((element) => {
 		// 	console.log("1", element);
 		// 	console.log(element.role);
 		// 	console.log(element.permission);
 		// });
-		let adminPerSet = [];
-		let userPerSet = [];
-		let adminPermission = new Object();
-		let userPermission = new Object();
-		permissions.forEach((a) => {
-			if (a.role === "admin") {
-				// perSet = [{ permissions: [...new Set([].concat(a.permission))] }];
-				adminPerSet.push(a.permission);
-				adminPermission.role = "admin";
-			} else if (a.role === "user") {
-				userPerSet.push(a.permission);
-				userPermission.role = "user";
-			}
-		});
+		// let adminPerSet = [];
+		// let userPerSet = [];
+		// let adminPermission = new Object();
+		// let userPermission = new Object();
+		// permissions.forEach((a) => {
+		// 	if (a.role === "admin") {
+		// 		// perSet = [{ permissions: [...new Set([].concat(a.permission))] }];
+		// 		adminPerSet.push(a.permission);
+		// 		adminPermission.role = "admin";
+		// 	} else if (a.role === "user") {
+		// 		userPerSet.push(a.permission);
+		// 		userPermission.role = "user";
+		// 	}
+		// });
 
-		if (adminPermission.role === "admin") {
-			// perSet = [{ permissions: [...new Set([].concat(a.permission))] }];
-			adminPermission.permission = adminPerSet;
-		}
+		// if (adminPermission.role === "admin") {
+		// 	// perSet = [{ permissions: [...new Set([].concat(a.permission))] }];
+		// 	adminPermission.permission = adminPerSet;
+		// }
 
-		if (userPermission.role === "user") {
-			userPermission.permission = userPerSet;
-		}
+		// if (userPermission.role === "user") {
+		// 	userPermission.permission = userPerSet;
+		// }
 
 		result = {
 			...result,
-			adminPermission,
-			userPermission,
+			data: roles,
+			// adminPermission,
+			// userPermission,
 		};
 
 		// commit

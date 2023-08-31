@@ -38,24 +38,22 @@ module.exports = async (ctx) => {
 		};
 
 		Validator.validate(params, {
-			id: {
-				optional: true,
-				type: ["string", "number"],
-				regex: /^[1-9][0-9]*$/,
-			},
+			// id: {
+			// 	optional: true,
+			// 	type: ["string", "number"],
+			// 	regex: /^[1-9][0-9]*$/,
+			// },
 		});
 
 		Validator.validate(input, {
 			// f_staff_no: { optional: params.hasOwnProperty("id"), empty: false, type: 'string' },
-			f_test: {
-				optional: true,
-				type: ["string", "number"],
-				regex: /^[0-9]*$/,
+			f_title: {
+				optional: false,
+				type: ["string"],
 			},
-			f_test2: {
-				optional: true,
-				type: ["string", "number"],
-				regex: /^[0-9]*$/,
+			f_msg: {
+				optional: false,
+				type: ["string"],
 			},
 		});
 
@@ -70,25 +68,15 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
-		// const sqlParams = {
-		// 	r_updated_at: new Date(),
-
-		// 	r_modified_by: payload.id,
-		// };
-
-		const tableName = "t_test";
-
-		let modelId = undefined;
-
 		// if(params.hasOwnProperty('id')){
 
 		// }
 
-		await transaction.table("t_test").insert({
-			r_test: input.f_test,
-			r_test2: input.f_test2,
-			r_test3: input.f_test3,
-			r_test4: input.f_test4,
+		await transaction.table("t_ticket").insert({
+			r_title: input.f_title,
+			r_user: payload.name,
+			r_msg: input.f_msg,
+			r_created_at: new Date(),
 		});
 
 		result = {

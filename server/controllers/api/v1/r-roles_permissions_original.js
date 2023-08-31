@@ -16,6 +16,7 @@ const Crypto = require("crypto");
 const Jose = require("jose");
 
 const Validator = require("19json-validator");
+const { SlowBuffer } = require("buffer");
 
 module.exports = async (ctx) => {
 	// result object
@@ -82,35 +83,75 @@ module.exports = async (ctx) => {
 		if (tokenIsError.indexOf(true) !== -1) {
 			throw new Error("invalid token");
 		}
-		let users;
-		if (params.hasOwnProperty("id")) {
-			users = await knex
-				.table("t_users")
-				.select("r_id", "r_name", "r_created_at")
-				.where("r_id", params.id)
-				.whereNull("r_deleted_at")
-				.first();
-			if (typeof users === "undefined") {
-				throw new Error("User ID Not Exist");
+		// let users;
+		// if (params.hasOwnProperty("id")) {
+		// 	users = await knex
+		// 		.table("t_users")
+		// 		.select("r_id", "r_username", "r_created_at")
+		// 		.where("r_id", params.id)
+		// 		.whereNull("r_deleted_at")
+		// 		.first();
+		// 	if (typeof users === "undefined") {
+		// 		throw new Error("User ID Not Exist");
+		// 	}
+		// } else {
+		// 	users = await knex
+		// 		.table("t_users")
+		// 		.select("r_id", "r_username", "r_created_at")
+		// 		.whereNull("r_deleted_at");
+		// }
+
+		let permissions = await knex
+			.table("t_roles")
+			.join(
+				"t_roles_permissions",
+				"t_roles.r_id",
+				"=",
+				"t_roles_permissions.r_role_id"
+			)
+			.join(
+				"t_permissions",
+				"t_permissions.r_id",
+				"=",
+				"t_roles_permissions.r_permission_id"
+			)
+			.select("t_roles.r_name as role  ", "t_permissions.r_name as permission");
+
+		// console.log(typeof permissions);
+		// console.log(permissions);
+		// permissions.forEach((element) => {
+		// 	console.log("1", element);
+		// 	console.log(element.role);
+		// 	console.log(element.permission);
+		// });
+		let adminPerSet = [];
+		let userPerSet = [];
+		let adminPermission = new Object();
+		let userPermission = new Object();
+		permissions.forEach((a) => {
+			if (a.role === "admin") {
+				// perSet = [{ permissions: [...new Set([].concat(a.permission))] }];
+				adminPerSet.push(a.permission);
+				adminPermission.role = "admin";
+			} else if (a.role === "user") {
+				userPerSet.push(a.permission);
+				userPermission.role = "user";
 			}
-		} else {
-			users = await knex
-				.table("t_users")
-				.select("r_id", "r_name", "r_created_at")
-				.whereNull("r_deleted_at");
+		});
+
+		if (adminPermission.role === "admin") {
+			// perSet = [{ permissions: [...new Set([].concat(a.permission))] }];
+			adminPermission.permission = adminPerSet;
 		}
 
-		// "r_id": 1,
-		// "r_username": "ben",
-		// "r_password": "bd255b71f740860db5c5f23ac3d5ede16d81303dd588657a0d0914d9563d0cbb39abeae3ddff9cbf310188d0e4282ae400d21fb61575b5a9b321f984b0235ce1",
-		// "r_created_at": "2023-08-28T09:12:29.000Z",
-		// "r_updated_at": null,
-		// "r_deleted_at": null
-		// add to result
+		if (userPermission.role === "user") {
+			userPermission.permission = userPerSet;
+		}
+
 		result = {
 			...result,
-
-			users,
+			adminPermission,
+			userPermission,
 		};
 
 		// commit

@@ -31,8 +31,9 @@ module.exports = async (ctx) => {
 	let knex = ctx.knex;
 
 	// knex transaction
-	let transaction = undefined; // await knex.transaction();
+	// let transaction = undefined; // await knex.transaction();
 
+	let transaction = await knex.transaction();
 	// main workflow
 	try {
 		// token
@@ -47,7 +48,7 @@ module.exports = async (ctx) => {
 			...(ctx.request.query || {}),
 
 			// body
-			//...(ctx.request.body || {})
+			...(ctx.request.body || {}),
 		};
 
 		// validate url id
@@ -82,35 +83,23 @@ module.exports = async (ctx) => {
 		if (tokenIsError.indexOf(true) !== -1) {
 			throw new Error("invalid token");
 		}
-		let users;
-		if (params.hasOwnProperty("id")) {
-			users = await knex
-				.table("t_users")
-				.select("r_id", "r_name", "r_created_at")
-				.where("r_id", params.id)
-				.whereNull("r_deleted_at")
-				.first();
-			if (typeof users === "undefined") {
-				throw new Error("User ID Not Exist");
-			}
-		} else {
-			users = await knex
-				.table("t_users")
-				.select("r_id", "r_name", "r_created_at")
-				.whereNull("r_deleted_at");
+
+		const ticket_with_id = await knex
+			.table("t_ticket")
+			.where("r_id", params.id)
+			.whereNull("r_deleted_at")
+			.first();
+		if (typeof ticket_with_id === "undefined") {
+			throw new Error("Ticket ID Not Exist");
 		}
 
-		// "r_id": 1,
-		// "r_username": "ben",
-		// "r_password": "bd255b71f740860db5c5f23ac3d5ede16d81303dd588657a0d0914d9563d0cbb39abeae3ddff9cbf310188d0e4282ae400d21fb61575b5a9b321f984b0235ce1",
-		// "r_created_at": "2023-08-28T09:12:29.000Z",
-		// "r_updated_at": null,
-		// "r_deleted_at": null
+		await transaction.table("t_ticket").where("r_id", params.id).update({
+			r_deleted_at: new Date(),
+		});
+
 		// add to result
 		result = {
 			...result,
-
-			users,
 		};
 
 		// commit

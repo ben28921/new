@@ -45,7 +45,7 @@ module.exports.update = async (ctx) => {
 		{
 			// seed
 
-			// admin data
+			// role data
 			const roles = [
 				{
 					r_name: "user",
@@ -92,7 +92,7 @@ module.exports.update = async (ctx) => {
 		{
 			// seed
 
-			// admin data
+			// permission data
 			const permissions = [
 				{
 					r_name: "GET /users",
@@ -146,6 +146,50 @@ module.exports.update = async (ctx) => {
 			t.collate("utf8mb4_general_ci");
 		});
 
+		{
+			// seed
+
+			// permission data
+			const roles_permissions = [
+				{
+					r_role_id: 1,
+					r_permission_id: 1,
+				},
+				{
+					r_role_id: 2,
+					r_permission_id: 1,
+				},
+				{
+					r_role_id: 2,
+					r_permission_id: 1,
+				},
+				{
+					r_role_id: 2,
+					r_permission_id: 2,
+				},
+				{
+					r_role_id: 2,
+					r_permission_id: 3,
+				},
+				{
+					r_role_id: 2,
+					r_permission_id: 4,
+				},
+			];
+
+			for (const m of roles_permissions) {
+				await knex
+					.table("t_roles_permissions")
+
+					.insert({
+						...m,
+
+						...times,
+					})
+
+					.then((r) => (m.id = r[0]));
+			}
+		}
 		// commit
 		transaction && transaction.commit();
 	} catch (err) {

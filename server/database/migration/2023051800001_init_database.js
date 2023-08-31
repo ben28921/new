@@ -23,11 +23,11 @@ module.exports.update = async (ctx) => {
 
 	// main workflow
 	try {
-		// admin
+		// user
 		await knex.schema.createTable("t_users", (t) => {
 			t.increments("r_id");
 
-			t.string("r_username", 50).notNullable();
+			t.string("r_name", 50).notNullable();
 
 			t.string("r_password", 255).notNullable();
 
@@ -46,6 +46,30 @@ module.exports.update = async (ctx) => {
 			t.collate("utf8mb4_general_ci");
 		});
 
+		// t_ticket
+		await knex.schema.createTable("t_tickets", (t) => {
+			t.increments("r_id").notNullable();
+
+			t.string("r_title", 50).notNullable();
+
+			t.string("r_user", 50).notNullable();
+
+			t.string("r_msg", 500).notNullable();
+
+			t.datetime("r_created_at").notNullable().index();
+
+			t.datetime("r_updated_at").nullable();
+
+			t.datetime("r_deleted_at").nullable().index();
+
+			t.integer("r_modified_by").nullable();
+
+			t.engine("innodb");
+
+			t.charset("utf8mb4");
+
+			t.collate("utf8mb4_general_ci");
+		});
 		{
 			// seed
 

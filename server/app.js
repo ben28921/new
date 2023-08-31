@@ -169,11 +169,32 @@ const AppContext = {};
 				controllerPath: Path.join(baseControllerPath, "r-ticket.js"),
 			},
 			{
-				methods: ["POST"],
+				methods: ["GET"],
 
 				path: baseApiPath + "/ticket/:id",
 
+				controllerPath: Path.join(baseControllerPath, "r-ticket.js"),
+			},
+			{
+				methods: ["POST"],
+
+				path: baseApiPath + "/ticket",
+
 				controllerPath: Path.join(baseControllerPath, "c-ticket.js"),
+			},
+			{
+				methods: ["PATCH"],
+
+				path: baseApiPath + "/ticket/:id",
+
+				controllerPath: Path.join(baseControllerPath, "u-ticket.js"),
+			},
+			{
+				methods: ["DELETE"],
+
+				path: baseApiPath + "/ticket/:id",
+
+				controllerPath: Path.join(baseControllerPath, "d-ticket.js"),
 			},
 			{
 				methods: ["GET"],

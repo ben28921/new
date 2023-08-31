@@ -80,7 +80,7 @@ module.exports = async (ctx) => {
 		const tokenIsError = [
 			payload.type !== "ACCESS_TOKEN",
 
-			//tokenData.scopes.indexOf('GET /car-parks-summary') === -1
+			payload.permissions.indexOf("POST /users") === -1,
 		];
 
 		// invalid token
@@ -105,6 +105,7 @@ module.exports = async (ctx) => {
 		await transaction.table("t_users").insert({
 			r_name: input.username,
 			r_password: password,
+			r_role_id: 1,
 			r_created_at: new Date(),
 		});
 
