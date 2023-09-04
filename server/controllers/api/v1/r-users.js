@@ -76,6 +76,7 @@ module.exports = async (ctx) => {
 			payload.type !== "ACCESS_TOKEN",
 
 			//tokenData.scopes.indexOf('GET /car-parks-summary') === -1
+			// payload.permissions.indexOf("POST /roles_permissions") === -1,
 		];
 
 		// invalid token

@@ -38,21 +38,17 @@ module.exports = async (ctx) => {
 		};
 
 		Validator.validate(params, {
-			// id: {
-			// 	optional: true,
-			// 	type: ["string", "number"],
-			// 	regex: /^[1-9][0-9]*$/,
-			// },
+			id: {
+				optional: false,
+				type: ["string", "number"],
+				regex: /^[1-9][0-9]*$/,
+			},
 		});
 
 		Validator.validate(input, {
 			// f_staff_no: { optional: params.hasOwnProperty("id"), empty: false, type: 'string' },
-			f_title: {
-				optional: false,
-				type: ["string"],
-			},
-			f_msg: {
-				optional: false,
+			f_content: {
+				optional: true,
 				type: ["string"],
 			},
 		});
@@ -62,7 +58,10 @@ module.exports = async (ctx) => {
 			new TextEncoder().encode(config.application.secret)
 		);
 
-		const tokenIsError = [payload.type !== "ACCESS_TOKEN"];
+		const tokenIsError = [
+			payload.type !== "ACCESS_TOKEN",
+			// payload.permissions.indexOf("POST /roles_permissions") === -1,
+		];
 
 		if (tokenIsError.indexOf(true) !== -1) {
 			throw new Error("invalid token");
@@ -72,10 +71,10 @@ module.exports = async (ctx) => {
 
 		// }
 
-		await transaction.table("t_ticket").insert({
-			r_title: input.f_title,
-			r_user: payload.name,
-			r_msg: input.f_msg,
+		await transaction.table("t_posts").insert({
+			r_ticket_id: params.id,
+			r_user_id: payload.id,
+			r_content: input.f_content,
 			r_created_at: new Date(),
 		});
 

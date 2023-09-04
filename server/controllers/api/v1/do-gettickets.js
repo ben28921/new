@@ -31,8 +31,9 @@ module.exports = async (ctx) => {
 	let knex = ctx.knex;
 
 	// knex transaction
-	let transaction = await knex.transaction();
+	// let transaction = undefined; // await knex.transaction();
 
+	let transaction = await knex.transaction();
 	// main workflow
 	try {
 		// token
@@ -44,7 +45,7 @@ module.exports = async (ctx) => {
 		// input
 		let input = {
 			// query
-			// ...(ctx.request.query || {}),
+			...(ctx.request.query || {}),
 
 			// body
 			...(ctx.request.body || {}),
@@ -52,15 +53,17 @@ module.exports = async (ctx) => {
 
 		// validate url id
 		Validator.validate(params, {
-			id: { type: ["string", "number"], regex: /^[1-9][0-9]*$/ },
+			id: {
+				optional: true,
+				type: ["string", "number"],
+				regex: /^[1-9][0-9]*$/,
+			},
 		});
+
+		//console.log(input.f_sort_by);
 
 		// validate
-		Validator.validate(input, {
-			//f_name: { type: 'string', empty: false },
-
-			f_address: { type: "string", empty: false },
-		});
+		Validator.validate(input, {});
 
 		// verify token
 		//const tokenData = Jwt.verify(token, config.application.secret);
@@ -82,17 +85,30 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
-		// create
-		await transaction.table("t_car_parks").where("r_id", params.id).update({
-			//r_name: input.f_name,
-			r_address: input.f_address,
-			r_updated_at: new Date(),
-			r_modified_by: payload.id, // token payload
-		});
+		const tickets = await knex.table("t_tickets").select("r_id", "r_title");
 
+		const ticketIds = tickets.map((el) => el.r_id);
+
+		const posts = await knex
+			.table("t_posts")
+			.select("r_id", "r_content", "r_ticket_id")
+			.whereIn("r_ticket_id", ticketIds);
+
+		console.log(posts);
+		tickets.forEach((element) => {
+			const { r_id, r_title } = element;
+			element.posts = posts.filter((ele) => ele.r_ticket_id == r_id);
+		});
+		// const ticketGroup = posts.groupBy("r_ticket_id");
+		// console.log(ticketGroup);
+
+		// console.log(tickets);
+		// console.log(ticketIds);
+		console.log(posts);
 		// add to result
 		result = {
 			...result,
+			data: tickets,
 		};
 
 		// commit

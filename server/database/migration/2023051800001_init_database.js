@@ -46,15 +46,15 @@ module.exports.update = async (ctx) => {
 			t.collate("utf8mb4_general_ci");
 		});
 
-		// t_ticket
+		// t_tickets
 		await knex.schema.createTable("t_tickets", (t) => {
 			t.increments("r_id").notNullable();
 
-			t.string("r_title", 50).notNullable();
-
 			t.integer("r_user_id", 50).notNullable();
 
-			t.string("r_msg", 500).notNullable();
+			t.string("r_title", 50).notNullable();
+
+			t.tinyint("r_is_solved").notNullable();
 
 			t.datetime("r_created_at").notNullable().index();
 
@@ -76,7 +76,7 @@ module.exports.update = async (ctx) => {
 			// admin data
 			const users = [
 				{
-					r_username: "ben",
+					r_name: "ben",
 
 					// password = password
 					r_password:
@@ -99,6 +99,31 @@ module.exports.update = async (ctx) => {
 					.then((r) => (m.id = r[0]));
 			}
 		}
+
+		// t_posts
+		await knex.schema.createTable("t_posts", (t) => {
+			t.increments("r_id").notNullable();
+
+			t.integer("r_ticket_id").notNullable();
+
+			t.integer("r_user_id").notNullable();
+
+			t.string("r_content", 255).nullable();
+
+			t.datetime("r_created_at").notNullable().index();
+
+			t.datetime("r_updated_at").nullable();
+
+			t.datetime("r_deleted_at").nullable().index();
+
+			t.integer("r_modified_by").nullable();
+
+			t.engine("innodb");
+
+			t.charset("utf8mb4");
+
+			t.collate("utf8mb4_general_ci");
+		});
 
 		// commit
 		transaction && transaction.commit();

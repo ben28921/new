@@ -166,35 +166,35 @@ const AppContext = {};
 
 				path: baseApiPath + "/ticket",
 
-				controllerPath: Path.join(baseControllerPath, "r-ticket.js"),
+				controllerPath: Path.join(baseControllerPath, "r-tickets.js"),
 			},
 			{
 				methods: ["GET"],
 
 				path: baseApiPath + "/ticket/:id",
 
-				controllerPath: Path.join(baseControllerPath, "r-ticket.js"),
+				controllerPath: Path.join(baseControllerPath, "r-tickets.js"),
 			},
 			{
 				methods: ["POST"],
 
 				path: baseApiPath + "/ticket",
 
-				controllerPath: Path.join(baseControllerPath, "c-ticket.js"),
+				controllerPath: Path.join(baseControllerPath, "c-tickets.js"),
 			},
 			{
 				methods: ["PATCH"],
 
 				path: baseApiPath + "/ticket/:id",
 
-				controllerPath: Path.join(baseControllerPath, "u-ticket.js"),
+				controllerPath: Path.join(baseControllerPath, "u-tickets.js"),
 			},
 			{
 				methods: ["DELETE"],
 
 				path: baseApiPath + "/ticket/:id",
 
-				controllerPath: Path.join(baseControllerPath, "d-ticket.js"),
+				controllerPath: Path.join(baseControllerPath, "d-tickets.js"),
 			},
 			{
 				methods: ["GET"],
@@ -209,20 +209,6 @@ const AppContext = {};
 				path: baseApiPath + "/roles-permissions",
 
 				controllerPath: Path.join(baseControllerPath, "c-roles_permissions.js"),
-			},
-			{
-				methods: ["GET"],
-
-				path: baseApiPath + "/users",
-
-				controllerPath: Path.join(baseControllerPath, "r-users.js"),
-			},
-			{
-				methods: ["GET"],
-
-				path: baseApiPath + "/users/:id",
-
-				controllerPath: Path.join(baseControllerPath, "r-users.js"),
 			},
 			{
 				methods: ["GET"],
@@ -281,6 +267,20 @@ const AppContext = {};
 				controllerPath: Path.join(baseControllerPath, "d-roles.js"),
 			},
 			{
+				methods: ["GET"],
+
+				path: baseApiPath + "/users",
+
+				controllerPath: Path.join(baseControllerPath, "r-users.js"),
+			},
+			{
+				methods: ["GET"],
+
+				path: baseApiPath + "/users/:id",
+
+				controllerPath: Path.join(baseControllerPath, "r-users.js"),
+			},
+			{
 				methods: ["POST"],
 
 				path: baseApiPath + "/users",
@@ -314,6 +314,27 @@ const AppContext = {};
 				path: baseApiPath + "/car-park/:id",
 
 				controllerPath: Path.join(baseControllerPath, "c-car-park.js"),
+			},
+			{
+				methods: ["GET"],
+
+				path: baseApiPath + "/posts/:id",
+
+				controllerPath: Path.join(baseControllerPath, "r-posts.js"),
+			},
+			{
+				methods: ["POST"],
+
+				path: baseApiPath + "/posts/:id",
+
+				controllerPath: Path.join(baseControllerPath, "c-posts.js"),
+			},
+			{
+				methods: ["GET"],
+
+				path: baseApiPath + "/do-gettickets",
+
+				controllerPath: Path.join(baseControllerPath, "do-gettickets.js"),
 			},
 		];
 

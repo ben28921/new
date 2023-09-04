@@ -24,16 +24,15 @@ module.exports = async (ctx) => {
 	// config
 	let config = ctx.config;
 
-	// bunya
+	// bunyan
 	let log = ctx.log;
 
 	// knex
 	let knex = ctx.knex;
 
 	// knex transaction
-	// let transaction = undefined; // await knex.transaction();
+	let transaction = undefined; // await knex.transaction();
 
-	let transaction = await knex.transaction();
 	// main workflow
 	try {
 		// token
@@ -48,7 +47,7 @@ module.exports = async (ctx) => {
 			...(ctx.request.query || {}),
 
 			// body
-			...(ctx.request.body || {}),
+			//...(ctx.request.body || {})
 		};
 
 		// validate url id
@@ -63,16 +62,7 @@ module.exports = async (ctx) => {
 		//console.log(input.f_sort_by);
 
 		// validate
-		Validator.validate(input, {
-			f_title: {
-				optional: true,
-				type: ["string", "number"],
-			},
-			f_msg: {
-				optional: true,
-				type: ["string"],
-			},
-		});
+		Validator.validate(input, {});
 
 		// verify token
 		//const tokenData = Jwt.verify(token, config.application.secret);
@@ -86,6 +76,7 @@ module.exports = async (ctx) => {
 			payload.type !== "ACCESS_TOKEN",
 
 			//tokenData.scopes.indexOf('GET /car-parks-summary') === -1
+			// payload.permissions.indexOf("POST /roles_permissions") === -1,
 		];
 
 		// invalid token
@@ -93,38 +84,37 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
-		const datas = { r_updated_at: new Date() };
-
-		const ticket_with_id = await knex
-			.table("t_ticket")
-			.where("r_id", params.id)
-			.whereNull("r_deleted_at")
-			.first();
-		if (typeof ticket_with_id === "undefined") {
-			throw new Error("TICKET ID Not Exist");
+		// knex.table(t_tickets).where();
+		//check param id
+		let tickets;
+		if (params.hasOwnProperty("id")) {
+			tickets = await knex
+				.table("t_tickets")
+				.select("r_id", "r_title", "r_created_at")
+				.where("r_id", params.id)
+				.whereNull("r_deleted_at")
+				.first();
+			if (typeof tickets === "undefined") {
+				throw new Error("TICKET ID Not Exist");
+			}
+		} else {
+			tickets = await knex
+				.table("t_tickets")
+				.select("r_id", "r_title", "r_created_at")
+				.whereNull("r_deleted_at");
 		}
 
-		if (input.hasOwnProperty("f_title")) {
-			// const roleNameCount = await knex
-			// 	.table("t_ticket")
-			// 	.where("r_name", input.f_name)
-			// 	.whereNot("r_id", params.id)
-			// 	.count("r_id", { as: "r_total" })
-			// 	.then((r) => r[0].r_total);
-			// if (roleNameCount > 0) {
-			// 	throw new Error("Name exist");
-			// }
-			datas.r_title = input.f_title;
-		}
-
-		if (input.hasOwnProperty("f_msg")) {
-			datas.r_msg = input.f_msg;
-		}
-		await transaction.table("t_ticket").where("r_id", params.id).update(datas);
-
+		// "r_id": 1,
+		// "r_username": "ben",
+		// "r_password": "bd255b71f740860db5c5f23ac3d5ede16d81303dd588657a0d0914d9563d0cbb39abeae3ddff9cbf310188d0e4282ae400d21fb61575b5a9b321f984b0235ce1",
+		// "r_created_at": "2023-08-28T09:12:29.000Z",
+		// "r_updated_at": null,
+		// "r_deleted_at": null
 		// add to result
 		result = {
 			...result,
+
+			tickets,
 		};
 
 		// commit

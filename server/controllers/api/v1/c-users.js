@@ -80,7 +80,7 @@ module.exports = async (ctx) => {
 		const tokenIsError = [
 			payload.type !== "ACCESS_TOKEN",
 
-			payload.permissions.indexOf("POST /users") === -1,
+			// payload.permissions.indexOf("POST /users") === -1,
 		];
 
 		// invalid token
