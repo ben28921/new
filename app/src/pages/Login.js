@@ -56,7 +56,7 @@ export default function Login() {
 				// console.log(res.data["msg"]);
 				setLoading(false);
 				if (res.data.r_access_token) {
-					localStorage.setItem("token", res.data.token);
+					localStorage.setItem("token", res.data.r_access_token);
 					localStorage.setItem("name", data.get("email"));
 					navigate("/home");
 				} else {
