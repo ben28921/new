@@ -1,22 +1,21 @@
-import * as React from "react";
+import { React, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 // import Avatar from '@mui/material/Avatar';
 import Swal from "sweetalert2";
 
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import {
+	onShowLoading,
+	onHideLoading,
+	onLoggedIn,
+	onLogout,
+} from "../../redux/actions/settings";
+
+import { Typography, Box, Grid, Link, Container, Button } from "@mui/material";
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-// import Home from "./Home";
-// import Title from "../components/Title";
+
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -24,48 +23,50 @@ const defaultTheme = createTheme();
 
 export default function Login() {
 	const navigate = useNavigate();
-	const [name, setName] = useState(" ");
-	const [password, setPassword] = useState(" ");
+	const dispatch = useDispatch();
+
+	const [username, setUserName] = useState("");
+	const [password, setPassword] = useState("");
 
 	// const [authenticated, setAuthenticated] = useState(
 	//   //set up the localStorage
 	//   localStorage.getItem(localStorage.getItem("authenticated") || false)
 	// );
 
-	const [loading, setLoading] = useState(false);
+	// const [loading, setLoading] = useState(false);
+
 	useEffect(() => {
-		// setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-		}, 2000);
+		dispatch(onLogout());
 	}, []);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const data = new FormData(e.currentTarget);
-		setLoading(true);
+		dispatch(onShowLoading());
+		// const data = new FormData(e.currentTarget);
+		// setLoading(true);
 		axios
 			.post("http://127.0.0.1:82/api/v1/do-login", {
-				f_username: data.get("email"),
-				f_password: data.get("password"),
+				f_username: username,
+				f_password: password,
 				// name: name,
 				// password: password,
 			})
 			.then((res) => {
 				// // check login status
 				// console.log(res.data["msg"]);
-				setLoading(false);
-				if (res.data.r_access_token) {
-					localStorage.setItem("token", res.data.token);
-					localStorage.setItem("name", data.get("email"));
-					navigate("/home");
-				} else {
-					// setLoading(false);
-					// alert("Wrong username or password");
-					Swal.fire("Wrong username or password");
-				}
+				// setLoading(false);
+				// if (res.data.token) {
+				// 	localStorage.setItem("token", res.data.token);
+				// 	localStorage.setItem("name", data.get("email"));
+				// 	navigate("/draw");
+				// } else {
+				// 	// setLoading(false);
+				// 	// alert("Wrong username or password");
+				// 	Swal.fire("Wrong username or password");
+				// }
 				// console.log(res.data["msg"]);
 				// // console.table(res.data);
+				const { r_access_token, r_refresh_token } = res;
 			})
 			.catch((error) => {
 				console.error(error);
