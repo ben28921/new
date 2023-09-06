@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import axios from "axios";
+
+import { Button } from "@mui/material";
 
 const Home = () => {
 	const token = localStorage.getItem("token");
@@ -15,7 +18,7 @@ const Home = () => {
 			})
 			.then((data) => {
 				setTickets(data.data.tickets);
-				console.log(data.data.tickets);
+				// console.log(data.data.tickets);
 			})
 			.catch((err) => console.log(err));
 	};
@@ -25,10 +28,20 @@ const Home = () => {
 	}, []);
 	return (
 		<div>
+			<h1>Tickets</h1>
+			<Button
+				onClick={() => {
+					alert("clicked");
+				}}
+			>
+				Add Ticket
+			</Button>
 			{tickets.map((data, i) => (
 				<div>
-					Ticket:{data.r_title},id{data.r_id}
-					<button>Detail</button>
+					TicketId:{data.r_id} ,title:
+					<Link to={`/posts/${data.r_id}`}>{data.r_title}</Link> , createAt :
+					{data.r_created_at}
+					<hr />
 				</div>
 			))}
 		</div>

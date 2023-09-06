@@ -6,6 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import TicketDetail from "./pages/TicketDetail";
+import AddTicket from "./pages/AddTicket";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,6 +19,8 @@ root.render(
 				<Route index element={<App />} />
 				<Route path="login" element={<Login />} />
 				<Route path="home" element={<Home />} />
+				<Route path="posts/:id" element={<TicketDetail />} />
+				<Route path="addTicket" element={<AddTicket />} />
 			</Routes>
 		</BrowserRouter>
 	</React.StrictMode>
