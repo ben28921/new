@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import TicketDetail from "./pages/TicketDetail";
 import AddTicket from "./pages/AddTicket";
+import User from "./pages/User";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,6 +22,7 @@ root.render(
 				<Route path="home" element={<Home />} />
 				<Route path="posts/:id" element={<TicketDetail />} />
 				<Route path="addTicket" element={<AddTicket />} />
+				<Route path="user" element={<User />} />
 			</Routes>
 		</BrowserRouter>
 	</React.StrictMode>

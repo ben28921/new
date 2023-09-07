@@ -1,6 +1,6 @@
 import * as React from "react";
-// import Avatar from '@mui/material/Avatar';
-import Swal from "sweetalert2";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,15 +10,18 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import Avatar from '@mui/material/Avatar';
+
+import Swal from "sweetalert2";
+import axios from "axios";
+
+import { SERVER_ADDRESS } from "../utils/ServerParams";
 // import Home from "./Home";
 // import Title from "../components/Title";
-import axios from "axios";
-import CircularProgress from "@mui/material/CircularProgress";
 
 const defaultTheme = createTheme();
 
@@ -45,7 +48,7 @@ export default function Login() {
 		const data = new FormData(e.currentTarget);
 		setLoading(true);
 		axios
-			.post("http://127.0.0.1:82/api/v1/do-login", {
+			.post(`${SERVER_ADDRESS}/api/v1/do-login`, {
 				f_username: data.get("email"),
 				f_password: data.get("password"),
 				// name: name,

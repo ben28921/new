@@ -1,6 +1,12 @@
-import { Box, Button, FormLabel, TextField } from "@mui/material";
-import axios from "axios";
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+
+import { Box, Button, FormLabel, TextField } from "@mui/material";
+
+import axios from "axios";
+
+import Navbar from "../components/Navbar";
+import { SERVER_ADDRESS } from "../utils/ServerParams";
 
 const AddTicket = () => {
 	const token = localStorage.getItem("token");
@@ -24,8 +30,8 @@ const AddTicket = () => {
 		console.log(data);
 		axios
 			.post(
-				"http://127.0.0.1:82/api/v1/ticket",
-				{ f_title: input.id },
+				`${SERVER_ADDRESS}/api/v1/ticket`,
+				{ f_title: input.title },
 				{
 					headers: {
 						"Content-Type": "application/json",
@@ -37,6 +43,7 @@ const AddTicket = () => {
 	};
 	return (
 		<Box>
+			<Navbar />
 			<h1>Add ticket</h1>
 			<form onSubmit={handleSubmit}>
 				<FormLabel>Title</FormLabel>

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, NavLink } from "react-router-dom";
 
 import axios from "axios";
 
 import { TextField, Button } from "@mui/material";
 
 import { SERVER_ADDRESS } from "../utils/ServerParams";
+import Navbar from "../components/Navbar";
 
 const TicketDetail = () => {
 	const token = localStorage.getItem("token");
@@ -19,21 +20,24 @@ const TicketDetail = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		axios.post(
-			`http://127.0.0.1:82/api/v1/posts/${id}`,
-			{ f_content: newPost },
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-			}
-		);
+		axios
+			.post(
+				// `http://127.0.0.1:82/api/v1/posts/${id}`,
+				`${SERVER_ADDRESS}/api/v1/posts/${id}`,
+				{ f_content: newPost },
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.catch((err) => console.log(err));
 	};
 	const getAllPosts = (a) =>
 		axios
 			// .get(`${SERVER_ADDRESS}/api/v1/posts/${id}`)
-			.get(`http://127.0.0.1:82/api/v1/posts/${id}`, {
+			.get(`${SERVER_ADDRESS}/api/v1/posts/${id}`, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
@@ -47,6 +51,7 @@ const TicketDetail = () => {
 	console.log(posts);
 	return (
 		<div>
+			<Navbar />
 			<h1>ticketDetail</h1>
 			<h2>Ticket id :{id}</h2>
 			{posts.map((data) => (

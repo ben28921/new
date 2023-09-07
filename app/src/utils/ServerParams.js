@@ -7,7 +7,7 @@
 // 		? `:${window.location.port}`
 // 		: ""
 // }`;
-export const SERVER_ADDRESS = "127.0.0.1:82";
+export const SERVER_ADDRESS = "http://127.0.0.1:82";
 //export const SERVER_ADDRESS = `${window.location.protocol}//4.193.100.54`;
 
 //export const SERVER_ADDRESS = `${window.location.protocol}//office.glassbean.com:7751`;
