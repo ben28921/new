@@ -10,6 +10,10 @@ const Navbar = () => {
 			<NavLink to="/User" activeStyle>
 				User
 			</NavLink>
+
+			<NavLink to="/User" activeStyle>
+				Ticket
+			</NavLink>
 		</>
 	);
 };

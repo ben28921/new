@@ -41,7 +41,12 @@ const Home = () => {
 			})
 			.then((data) => {
 				setTickets(data.data.tickets);
-				// console.log(data.data.tickets);
+				// if (typeof data.data.tickets === "object") {
+				// 	setTickets([data.data.tickets]);
+				// 	// console.log("data", [data.data.tickets]);
+				// } else {
+				// 	setTickets(data.data.tickets);
+				// }
 			})
 			.catch((err) => console.log(err));
 	};
@@ -49,13 +54,17 @@ const Home = () => {
 	useEffect(() => {
 		getAllticket();
 	}, []);
+
+	console.log("a", tickets);
 	return (
 		<div>
 			<Navbar />
 			<h1>Tickets</h1>
 			<Button onClick={navigateToAddTicket}>Add Ticket</Button>
+			console.log(tickets);
+			{/* {tickets.map((data) => data.r_id)} */}
 			{tickets.map((data, i) => (
-				<div>
+				<div key={i}>
 					TicketId:{data.r_id} ,title:
 					<Link to={`/posts/${data.r_id}`}>{data.r_title}</Link> , createAt :
 					{data.r_created_at}

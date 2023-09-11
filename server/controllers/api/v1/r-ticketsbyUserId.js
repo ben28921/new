@@ -86,34 +86,18 @@ module.exports = async (ctx) => {
 
 		// knex.table(t_tickets).where();
 		//check param id
-		console.log(payload.id);
 		let tickets;
-		// if (payload.role === 1) {
-		// 	if (params.hasOwnProperty("id")) {
-		// 		tickets = await knex
-		// 			.table("t_tickets")
-		// 			.select("r_id", "r_title", "r_created_at")
-		// 			.where("r_user_id", payload.id)
-		// 			.where("r_id", params.id)
-		// 			.whereNull("r_deleted_at")
-		// 			.first();
-		// 		if (typeof tickets === "undefined") {
-		// 			throw new Error("TICKET ID Not Exist");
-		// 		}
-		// 	}
-		// }
-		if (payload.role === 1) {
+		if (params.hasOwnProperty("id")) {
 			tickets = await knex
 				.table("t_tickets")
 				.select("r_id", "r_title", "r_created_at")
-				.where("r_user_id", payload.id)
-				.whereNull("r_deleted_at");
-			// .first();
+				.where("r_user_id", params.id)
+				.whereNull("r_deleted_at")
+				.first();
 			if (typeof tickets === "undefined") {
 				throw new Error("TICKET ID Not Exist");
 			}
-		}
-		if (payload.role === 2) {
+		} else {
 			tickets = await knex
 				.table("t_tickets")
 				.select("r_id", "r_title", "r_created_at")

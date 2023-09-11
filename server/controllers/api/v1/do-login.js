@@ -46,28 +46,31 @@ const generateTokens = async (input) => {
 
 		.first();
 
-	console.log(user);
+	console.log("user", user);
 
 	const roles_permissions = await knex
 		.table("t_roles_permissions")
 		.where("r_role_id", user.r_role_id);
-	console.log(roles_permissions);
+	// console.log(roles_permissions);
 
 	const permissions = await knex.table("t_permissions").whereIn(
 		"r_id",
 		roles_permissions.map((obj) => obj.r_permission_id)
 	);
 
-	console.log(permissions);
+	// console.log(permissions);
 
 	// let permission = [];
 
 	// permission = [...new Set(permission)];
 
+	console.log("userid", user.r_role_id);
 	const accessToken = await new Jose.SignJWT({
 		id: user.r_id,
 
 		username: user.r_name,
+
+		role: user.r_role_id,
 
 		type: "ACCESS_TOKEN",
 
@@ -86,6 +89,8 @@ const generateTokens = async (input) => {
 		id: user.r_id,
 
 		username: user.r_name,
+
+		role: user.r_role_id,
 
 		type: "REFRESH_TOKEN",
 
