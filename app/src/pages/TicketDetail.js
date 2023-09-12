@@ -3,7 +3,15 @@ import { useNavigate, useParams, NavLink } from "react-router-dom";
 
 import axios from "axios";
 
-import { TextField, Button } from "@mui/material";
+import {
+	TextField,
+	Button,
+	Grid,
+	ListItem,
+	List,
+	Typography,
+	ListItemText,
+} from "@mui/material";
 
 import { SERVER_ADDRESS } from "../utils/ServerParams";
 import Navbar from "../components/Navbar";
@@ -52,23 +60,43 @@ const TicketDetail = () => {
 	return (
 		<div>
 			<Navbar />
-			<h1>ticketDetail</h1>
-			<h2>Ticket id :{id}</h2>
-			{posts.map((data) => (
+			<List>
+				<h1>ticketDetail</h1>
+				<h2>Ticket id :{id}</h2>
+				{/* {posts.map((data) => (
 				<div>
 					postID:{data.r_id},userID:{data.r_user_id},content:{data.r_content}
 					,createAt:{data.r_created_at}
 				</div>
-			))}
-			<form onSubmit={handleSubmit}>
-				<TextField
-					value={newPost}
-					onChange={(e) => setNewPost(e.target.value)}
-				></TextField>
-				<Button type="submit">Add Post</Button>
-			</form>
+			))} */}
+				<TicketMessage MessageData={posts} />
+				<form onSubmit={handleSubmit}>
+					<TextField
+						value={newPost}
+						onChange={(e) => setNewPost(e.target.value)}
+					></TextField>
+					<Button type="submit">Add Post</Button>
+				</form>
+			</List>
 		</div>
 	);
 };
 
+function TicketMessage({ MessageData }) {
+	return (
+		<>
+			{MessageData.map((data, i) => (
+				<ListItem>
+					<ListItemText
+						primary={data.r_id}
+						secondary={data.r_content}
+					></ListItemText>
+				</ListItem>
+			))}
+		</>
+	);
+}
+function inputText() {
+	return <></>;
+}
 export default TicketDetail;
