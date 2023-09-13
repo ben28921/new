@@ -3,28 +3,20 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import TicketDetail from "./pages/TicketDetail";
-import AddTicket from "./pages/AddTicket";
-import User from "./pages/User";
+import { BrowserRouter } from "react-router-dom";
+
+import { Provider } from "react-redux";
+
+import { store } from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
-		{/* <App /> */}
-
-		<BrowserRouter>
-			<Routes>
-				<Route index element={<App />} />
-				<Route path="login" element={<Login />} />
-				<Route path="home" element={<Home />} />
-				<Route path="posts/:id" element={<TicketDetail />} />
-				<Route path="addTicket" element={<AddTicket />} />
-				<Route path="user" element={<User />} />
-			</Routes>
-		</BrowserRouter>
+		<Provider store={store}>
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
+		</Provider>
 	</React.StrictMode>
 );
 
