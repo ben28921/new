@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {
 	Box,
@@ -21,6 +22,7 @@ const AddTicket = () => {
 	const [input, setInputs] = useState({ title: "" });
 	const [title, setTitle] = useState("");
 
+	const navigate = useNavigate;
 	const handleChange = (e) => {
 		setInputs((prevState) => ({
 			...prevState,
@@ -32,6 +34,7 @@ const AddTicket = () => {
 		e.preventDefault();
 		console.log(input);
 		addTicket(input);
+		navigate("/Home");
 	};
 
 	const addTicket = (data) => {

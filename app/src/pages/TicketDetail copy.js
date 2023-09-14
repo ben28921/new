@@ -24,17 +24,12 @@ const TicketDetail = () => {
 	const [posts, setPosts] = useState([]);
 	const [newPost, setNewPost] = useState("");
 	const { id } = useParams();
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 
-	// useEffect(() => {
-	// 	// getAllPosts();
-	// 	// setPosts(posts);
-	// }, [posts]);
 	useEffect(() => {
 		getAllPosts();
 		// setPosts(posts);
 	}, []);
-
 	console.log(posts);
 
 	const handleSubmit = (e) => {
@@ -51,12 +46,7 @@ const TicketDetail = () => {
 					},
 				}
 			)
-			.then(
-				setLoading(true),
-				getAllPosts(),
-				console.log("post2", posts),
-				setLoading(false)
-			)
+			.then(getAllPosts())
 			.catch((err) => console.log(err));
 	};
 	const getAllPosts = async (a) =>
@@ -68,16 +58,12 @@ const TicketDetail = () => {
 					Authorization: `Bearer ${token}`,
 				},
 			})
-			.then((data) => {
-				setLoading(true);
-				setPosts(data.data.posts);
-				setLoading(false);
-			})
+			.then((data) => setPosts(data.data.posts))
 
 			.catch((err) => console.log(err));
 	// console.log(posts);
-	// console.log(id);
-	// console.log(posts);
+	console.log(id);
+	console.log(posts);
 	return (
 		<div>
 			<Navbar />
