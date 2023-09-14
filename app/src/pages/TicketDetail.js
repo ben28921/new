@@ -26,17 +26,35 @@ const TicketDetail = () => {
 	const { id } = useParams();
 	const [loading, setLoading] = useState(false);
 
+	const tryGetData = async () => {
+		try {
+			const res = await axios.get(`${SERVER_ADDRESS}/api/v1/posts/${id}`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			return res.data;
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	console.log("1", tryGetData());
+	useEffect(() => {
+		// const data = getAllPosts(tryGetData);
+		console.log("data", tryGetData());
+		// setPosts(data);
+	}, []);
 	// useEffect(() => {
 	// 	// getAllPosts();
-	// 	// setPosts(posts);
+	// 	getAllPosts();
+	// 	setPosts();
 	// }, [posts]);
-	useEffect(() => {
-		getAllPosts();
-		// setPosts(posts);
-	}, []);
 
 	console.log(posts);
 
+	tryGetData();
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		axios
@@ -59,22 +77,23 @@ const TicketDetail = () => {
 			)
 			.catch((err) => console.log(err));
 	};
-	const getAllPosts = async (a) =>
-		await axios
+	const getAllPosts = async (a) => {
+		const data = await axios
 			// .get(`${SERVER_ADDRESS}/api/v1/posts/${id}`)
 			.get(`${SERVER_ADDRESS}/api/v1/posts/${id}`, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
-			})
-			.then((data) => {
-				setLoading(true);
-				setPosts(data.data.posts);
-				setLoading(false);
-			})
+			});
+		return await data;
+	};
+	// .then((data) => {
+	// 	// setPosts(data.data.posts);
+	// 	return data.data.posts;
+	// })
 
-			.catch((err) => console.log(err));
+	// .catch((err) => console.log(err));
 	// console.log(posts);
 	// console.log(id);
 	// console.log(posts);
