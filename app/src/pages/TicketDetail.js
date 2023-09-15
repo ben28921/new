@@ -26,35 +26,18 @@ const TicketDetail = () => {
 	const { id } = useParams();
 	const [loading, setLoading] = useState(false);
 
-	const tryGetData = async () => {
-		try {
-			const res = await axios.get(`${SERVER_ADDRESS}/api/v1/posts/${id}`, {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			return res.data;
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	console.log("1", tryGetData());
-	useEffect(() => {
-		// const data = getAllPosts(tryGetData);
-		console.log("data", tryGetData());
-		// setPosts(data);
-	}, []);
 	// useEffect(() => {
 	// 	// getAllPosts();
-	// 	getAllPosts();
-	// 	setPosts();
+	// 	// setPosts(posts);
 	// }, [posts]);
+	useEffect(() => {
+		getAllPosts();
 
-	console.log(posts);
+		// setPosts(posts);
+	}, []);
 
-	tryGetData();
+	// console.log(posts);
+	// getAllPosts(),
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		axios
@@ -69,31 +52,27 @@ const TicketDetail = () => {
 					},
 				}
 			)
-			.then(
-				setLoading(true),
-				getAllPosts(),
-				console.log("post2", posts),
-				setLoading(false)
-			)
+			//
+			.then(getAllPosts(), console.log("post2", posts))
 			.catch((err) => console.log(err));
 	};
-	const getAllPosts = async (a) => {
-		const data = await axios
+	const getAllPosts = async (a) =>
+		await axios
 			// .get(`${SERVER_ADDRESS}/api/v1/posts/${id}`)
 			.get(`${SERVER_ADDRESS}/api/v1/posts/${id}`, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
-			});
-		return await data;
-	};
-	// .then((data) => {
-	// 	// setPosts(data.data.posts);
-	// 	return data.data.posts;
-	// })
+			})
+			.then((data) => {
+				setLoading(true);
+				setPosts(data.data.posts);
+				// setPosts((posts) => [data.data.posts, ...posts]);
+				setLoading(false);
+			})
 
-	// .catch((err) => console.log(err));
+			.catch((err) => console.log(err));
 	// console.log(posts);
 	// console.log(id);
 	// console.log(posts);
@@ -103,9 +82,9 @@ const TicketDetail = () => {
 			<Grid></Grid>
 			<Paper
 				display="flex"
-				alignItems="center"
-				justifyContent="center"
-				textAlign="center"
+				// alignItems="center"
+				// justifyContent="center"
+				// textAlign="center"
 				elevation={3}
 			>
 				<h1>TicketDetail</h1>
@@ -118,10 +97,20 @@ const TicketDetail = () => {
 				))} */}
 				<TicketMessage MessageData={posts} />
 				<form onSubmit={handleSubmit}>
-					<TextareaAutosize
-						value={newPost}
-						onChange={(e) => setNewPost(e.target.value)}
-					></TextareaAutosize>
+					<Grid>
+						{/* <TextareaAutosize
+							value={newPost}
+							onChange={(e) => setNewPost(e.target.value)}
+						></TextareaAutosize> */}
+						<TextField
+							placeholder="test"
+							value={newPost}
+							onChange={(e) => setNewPost(e.target.value)}
+							multiline
+							rows={5}
+							cols={20}
+						></TextField>
+					</Grid>
 					<Button type="submit">Add Post</Button>
 				</form>
 			</Paper>
@@ -140,7 +129,7 @@ function TicketMessage({ MessageData }) {
 				// 	></ListItemText>
 				// </ListItem>
 
-				<Box sx={{ borderBottom: 1, textAlign: "center" }}>
+				<Box key={i} sx={{ borderBottom: 1, textAlign: "center" }}>
 					userid:{data.r_user_id}, content:{data.r_content}
 				</Box>
 			))}
