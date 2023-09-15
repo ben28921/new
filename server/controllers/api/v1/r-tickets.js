@@ -114,10 +114,23 @@ module.exports = async (ctx) => {
 			}
 		}
 		if (payload.role === 2) {
+			// tickets = await knex
+			// .table("t_tickets")
+			// .join("t_users", "t_users.r_id", "=", "t_tickets.r_user_id")
+			// .select("r_id", "r_title", "r_user_id", "r_created_at")
+			// .whereNull("r_deleted_at");
+
+			// tickets = await knex
+			// 	.table("t_tickets")
+			// 	.select("r_id", "r_title", "r_user_id", "r_created_at")
+			// 	.whereNull("r_deleted_at");
+
 			tickets = await knex
-				.table("t_tickets")
-				.select("r_id", "r_title", "r_created_at")
-				.whereNull("r_deleted_at");
+				.table("t_tickets as a ")
+				.join("t_users as b ", "b.r_id", "=", "a.r_user_id")
+				.select("a.r_id", "r_title", "r_user_id", "r_name", "a.r_created_at")
+				.orderBy("a.r_created_at", "desc")
+				.whereNull("a.r_deleted_at");
 		}
 
 		// "r_id": 1,
