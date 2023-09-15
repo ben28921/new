@@ -107,6 +107,7 @@ function TicketTable({ ticketsData, onSelectTicket }) {
 					<TableRow>
 						<TableCell>TicketId</TableCell>
 						<TableCell>Title</TableCell>
+						<TableCell>Create By</TableCell>
 						<TableCell>Create At</TableCell>
 					</TableRow>
 				</TableHead>
@@ -116,6 +117,10 @@ function TicketTable({ ticketsData, onSelectTicket }) {
 							<TableCell>{data.r_id}</TableCell>
 							<TableCell>
 								<Link to={`/posts/${data.r_id}`}>{data.r_title}</Link>
+							</TableCell>
+							<TableCell>
+								{data.r_user_id}
+								{console.log(data)}
 							</TableCell>
 							<TableCell>
 								{Moment(data.r_created_at).format("MM/DD/YYYY HH:mm")}

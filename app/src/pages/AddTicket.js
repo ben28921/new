@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 
 import axios from "axios";
+import Swal from "sweetalert2";
 
 import Navbar from "../components/Navbar";
 import { SERVER_ADDRESS } from "../utils/ServerParams";
@@ -23,6 +24,7 @@ const AddTicket = () => {
 	const [title, setTitle] = useState("");
 
 	const navigate = useNavigate;
+	// let history = useHistory();
 	const handleChange = (e) => {
 		setInputs((prevState) => ({
 			...prevState,
@@ -30,11 +32,17 @@ const AddTicket = () => {
 		}));
 	};
 
+	const nHome = () => {
+		// navigate("/home");
+		window.location.href = "/home";
+	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(input);
+		// console.log(input);
 		addTicket(input);
-		navigate("/Home");
+		// Swal.fire("Ticket add ");
+		// history.push("/Home");
+		// navigate("/home");
 	};
 
 	const addTicket = (data) => {
@@ -50,6 +58,11 @@ const AddTicket = () => {
 					},
 				}
 			)
+			.then((data) => {
+				console.log(data);
+				// Swal.fire("Ticket add ");
+				window.location.href = "/home";
+			})
 			.catch((err) => console.log(err));
 	};
 	return (

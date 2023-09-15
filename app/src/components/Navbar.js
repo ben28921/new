@@ -77,7 +77,7 @@ const Navbar = () => {
 								</Grid>
 							</NavItem>
 						</Box>
-
+						{/* 
 						<Box>
 							<NavItem to={"/addTicket"}>
 								<Grid
@@ -92,7 +92,7 @@ const Navbar = () => {
 									<Typography sx={{ fontWeight: "bold" }}>AddTicket</Typography>
 								</Grid>
 							</NavItem>
-						</Box>
+						</Box> */}
 					</Toolbar>
 				</AppBar>
 			</Box>
