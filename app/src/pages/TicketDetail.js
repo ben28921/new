@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, NavLink } from "react-router-dom";
 
 import axios from "axios";
+import Moment from "moment";
 
 import {
 	TextField,
@@ -88,7 +89,8 @@ const TicketDetail = () => {
 				elevation={3}
 			>
 				<h1>TicketDetail</h1>
-				<h2>Ticket id :{id}</h2>
+				{/* {console.log(posts[0]?.r_title)} */}
+				<h2>Ticket Title :{posts[0]?.r_title}</h2>
 				{/* {posts.map((data) => (
 					<div>
 						postID:{data.r_id},userID:{data.r_user_id},content:{data.r_content}
@@ -111,6 +113,10 @@ const TicketDetail = () => {
 							cols={20}
 						></TextField>
 					</Grid>
+					<select>
+						<option value={0}>not sovled</option>
+						<option value={1}>sovled</option>
+					</select>
 					<Button type="submit">Add Post</Button>
 				</form>
 			</Paper>
@@ -136,8 +142,14 @@ function TicketMessage({ MessageData }) {
 				// </ListItem>
 
 				<Box key={i} sx={{ borderBottom: 1, padding: 3 }}>
-					userid:{data.r_user_id},content:
-					<NewLineText text={data.r_content} />
+					<Typography>UserName:{data.r_name}</Typography>
+					<Typography>
+						Content:
+						<NewLineText text={data.r_content} />
+					</Typography>
+					<Typography>
+						Created At: {Moment(data.r_created_at).format("MM/DD/YYYY HH:mm")}
+					</Typography>
 				</Box>
 			))}
 		</>

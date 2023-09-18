@@ -84,11 +84,29 @@ module.exports = async (ctx) => {
 			throw new Error("invalid token");
 		}
 
+		// let posts = await knex
+		// 	.table("t_posts")
+		// 	.select()
+		// 	.where("r_ticket_id", params.id)
+		// 	.whereNull("r_deleted_at");
+		// let title = await knex
+		// 	.table("t_posts as a")
+		// 	.join("t_tickets as b", "b.r_id", "=", "a.r_ticket_id");
+
 		let posts = await knex
-			.table("t_posts")
-			.select()
+			.table("t_posts as a")
+			.join("t_users as b", "b.r_id", "=", "a.r_user_id")
+			.join("t_tickets as c", "c.r_id", "=", "a.r_ticket_id")
+			.select("r_name", "c.r_title", "r_content", "a.r_created_at")
 			.where("r_ticket_id", params.id)
-			.whereNull("r_deleted_at");
+			.whereNull("a.r_deleted_at");
+
+		// let posts = await knex
+		// 	.table("t_posts as a")
+		// 	.join("t_users as b", "b.r_id", "=", "a.r_user_id")
+		// 	.select("r_name", "r_content", "a.r_created_at")
+		// 	.where("r_ticket_id", params.id)
+		// 	.whereNull("a.r_deleted_at");
 		// add to result
 		result = {
 			...result,

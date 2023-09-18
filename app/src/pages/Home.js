@@ -112,6 +112,7 @@ function TicketTable({ ticketsData, onSelectTicket }) {
 						{/* {console.log("name", ticketsData.hasOwnProperty("r_name"))} */}
 						{ticketsData[0]?.r_name ? <TableCell>Create By</TableCell> : null}
 						<TableCell>Create At</TableCell>
+						<TableCell>Status</TableCell>
 					</TableRow>
 				</TableHead>
 
@@ -131,6 +132,7 @@ function TicketTable({ ticketsData, onSelectTicket }) {
 							<TableCell>
 								{Moment(data.r_created_at).format("MM/DD/YYYY HH:mm")}
 							</TableCell>
+							<TableCell>Not solve</TableCell>
 						</TableRow>
 					))}
 				</TableBody>
