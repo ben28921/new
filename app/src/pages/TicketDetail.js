@@ -118,6 +118,12 @@ const TicketDetail = () => {
 	);
 };
 
+function NewLineText(props) {
+	const text = props.text;
+	const newText = text.split("\n").map((str) => <p>{str}</p>);
+	return newText;
+}
+
 function TicketMessage({ MessageData }) {
 	return (
 		<>
@@ -129,8 +135,9 @@ function TicketMessage({ MessageData }) {
 				// 	></ListItemText>
 				// </ListItem>
 
-				<Box key={i} sx={{ borderBottom: 1, textAlign: "center" }}>
-					userid:{data.r_user_id}, content:{data.r_content}
+				<Box key={i} sx={{ borderBottom: 1, padding: 3 }}>
+					userid:{data.r_user_id},content:
+					<NewLineText text={data.r_content} />
 				</Box>
 			))}
 		</>

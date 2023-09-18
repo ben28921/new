@@ -107,10 +107,14 @@ function TicketTable({ ticketsData, onSelectTicket }) {
 					<TableRow>
 						<TableCell>TicketId</TableCell>
 						<TableCell>Title</TableCell>
-						<TableCell>Create By</TableCell>
+						{/* {console.log("name", ticketsData[0]?.r_name)} */}
+						{/* {console.log("name", ticketsData)} */}
+						{/* {console.log("name", ticketsData.hasOwnProperty("r_name"))} */}
+						{ticketsData[0]?.r_name ? <TableCell>Create By</TableCell> : null}
 						<TableCell>Create At</TableCell>
 					</TableRow>
 				</TableHead>
+
 				<TableBody>
 					{ticketsData.map((data, i) => (
 						<TableRow onClick={() => onSelectTicket(data.r_id)} key={i}>
@@ -118,10 +122,12 @@ function TicketTable({ ticketsData, onSelectTicket }) {
 							<TableCell>
 								<Link to={`/posts/${data.r_id}`}>{data.r_title}</Link>
 							</TableCell>
-							<TableCell>
-								{data.r_name}
-								{/* {console.log(data)} */}
-							</TableCell>
+							{data.r_name ? (
+								<TableCell>
+									{data.r_name}
+									{/* {console.log(data)} */}
+								</TableCell>
+							) : null}
 							<TableCell>
 								{Moment(data.r_created_at).format("MM/DD/YYYY HH:mm")}
 							</TableCell>

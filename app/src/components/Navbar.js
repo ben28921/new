@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
-import { AppBar, Box, Grid, Toolbar, Typography } from "@mui/material";
+import {
+	AppBar,
+	Box,
+	Grid,
+	Toolbar,
+	Typography,
+	IconButton,
+	Button,
+} from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import TuneIcon from "@mui/icons-material/Tune";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { auto } from "async";
 
 const NavItem = ({ exact, to, children }) => {
 	return (
@@ -19,6 +31,11 @@ const NavItem = ({ exact, to, children }) => {
 };
 
 const Navbar = () => {
+	const navigate = useNavigate();
+	const handleClick = () => {
+		navigate("/login");
+		localStorage.clear();
+	};
 	return (
 		<>
 			{/* <AppBar>
@@ -77,21 +94,48 @@ const Navbar = () => {
 								</Grid>
 							</NavItem>
 						</Box>
-						{/* 
 						<Box>
-							<NavItem to={"/addTicket"}>
-								<Grid
-									container
-									px={7}
+							<Grid container>
+								<Button
 									sx={{
-										alignItems: "center",
-										height: "50px",
-										borderRight: "1px solid black",
+										color: "black",
+										fontWeight: "bold",
+										display: "flex",
 									}}
+									onClick={handleClick}
 								>
-									<Typography sx={{ fontWeight: "bold" }}>AddTicket</Typography>
-								</Grid>
-							</NavItem>
+									logout
+								</Button>
+							</Grid>
+						</Box>
+
+						{/* 
+						<Box ml={"auto"}>
+							<Grid container sx={{ alignItems: "center" }}>
+								<Box pr={1} sx={{ display: "none" }}>
+									<IconButton>
+										<TuneIcon sx={{ color: "#8CA4BD", fontSize: 26 }} />
+									</IconButton>
+								</Box>
+								<Box pl={1}>
+									<NavLink to={`/admin`}>
+										<IconButton>
+											<AccountCircleIcon
+												sx={{ color: "#8CA4BD", fontSize: 40 }}
+											/>
+										</IconButton>
+									</NavLink>
+								</Box>
+								<Box pl={2}>
+									<IconButton
+										onClick={() => {
+											// dispatch(onLogout());
+										}}
+									>
+										<LogoutIcon sx={{ color: "#8CA4BD", fontSize: 28 }} />
+									</IconButton>
+								</Box>
+							</Grid>
 						</Box> */}
 					</Toolbar>
 				</AppBar>
