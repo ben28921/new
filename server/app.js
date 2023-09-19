@@ -190,6 +190,13 @@ const AppContext = {};
 				controllerPath: Path.join(baseControllerPath, "u-tickets.js"),
 			},
 			{
+				methods: ["PATCH"],
+
+				path: baseApiPath + "/solve/:id",
+
+				controllerPath: Path.join(baseControllerPath, "do-isSolved.js"),
+			},
+			{
 				methods: ["DELETE"],
 
 				path: baseApiPath + "/ticket/:id",

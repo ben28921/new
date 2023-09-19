@@ -132,7 +132,9 @@ function TicketTable({ ticketsData, onSelectTicket }) {
 							<TableCell>
 								{Moment(data.r_created_at).format("MM/DD/YYYY HH:mm")}
 							</TableCell>
-							<TableCell>Not solve</TableCell>
+							{/* <TableCell>Not solve</TableCell> */}
+
+							<TableCell>{!data.r_is_solved ? "open" : "close"}</TableCell>
 						</TableRow>
 					))}
 				</TableBody>

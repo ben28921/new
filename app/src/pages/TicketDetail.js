@@ -24,6 +24,7 @@ const TicketDetail = () => {
 	const token = localStorage.getItem("token");
 	const [posts, setPosts] = useState([]);
 	const [newPost, setNewPost] = useState("");
+	const [solveValue, setsolveValue] = useState(0);
 	const { id } = useParams();
 	const [loading, setLoading] = useState(false);
 
@@ -55,6 +56,22 @@ const TicketDetail = () => {
 			)
 			//
 			.then(getAllPosts(), console.log("post2", posts))
+			.catch((err) => console.log(err));
+
+		axios
+			.patch(
+				`${SERVER_ADDRESS}/api/v1/solve/${id}`,
+				{
+					f_is_solved: solveValue,
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.then()
 			.catch((err) => console.log(err));
 	};
 	const getAllPosts = async (a) =>
@@ -113,9 +130,12 @@ const TicketDetail = () => {
 							cols={20}
 						></TextField>
 					</Grid>
-					<select>
-						<option value={0}>not sovled</option>
-						<option value={1}>sovled</option>
+					<select
+						value={solveValue}
+						onChange={(e) => setsolveValue(e.target.value)}
+					>
+						<option value={0}>open</option>
+						<option value={1}>close</option>
 					</select>
 					<Button type="submit">Add Post</Button>
 				</form>

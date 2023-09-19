@@ -105,7 +105,7 @@ module.exports = async (ctx) => {
 		if (payload.role === 1) {
 			tickets = await knex
 				.table("t_tickets")
-				.select("r_id", "r_title", "r_created_at")
+				.select("r_id", "r_title", "r_is_solved", "r_created_at")
 				.where("r_user_id", payload.id)
 				.whereNull("r_deleted_at");
 			// .first();
@@ -128,7 +128,14 @@ module.exports = async (ctx) => {
 			tickets = await knex
 				.table("t_tickets as a ")
 				.join("t_users as b ", "b.r_id", "=", "a.r_user_id")
-				.select("a.r_id", "r_title", "r_user_id", "r_name", "a.r_created_at")
+				.select(
+					"a.r_id",
+					"r_title",
+					"r_user_id",
+					"r_name",
+					"r_is_solved",
+					"a.r_created_at"
+				)
 				.orderBy("a.r_created_at", "desc")
 				.whereNull("a.r_deleted_at");
 		}
