@@ -138,8 +138,31 @@ module.exports = async (ctx) => {
 				)
 				.orderBy("a.r_created_at", "desc")
 				.whereNull("a.r_deleted_at");
-		}
 
+			let message = await knex
+				.table("t_posts")
+				.select("r_ticket_id", "r_content")
+				.where("r_ticket_id", 83)
+				.orderBy("r_created_at", "desc")
+				.first();
+
+			console.log(message);
+
+			// tickets = await knex
+			// 	.table("t_tickets as a ")
+			// 	.join("t_users as b ", "b.r_id", "=", "a.r_user_id")
+			// 	.join("t_posts as c", "c.r_ticket_id", "=", "a.r_id")
+			// 	.select(
+			// 		"a.r_id",
+			// 		"r_title",
+			// 		"a.r_user_id",
+			// 		"r_name",
+			// 		"r_is_solved",
+			// 		"a.r_created_at"
+			// 	)
+			// 	.orderBy("a.r_created_at", "desc")
+			// 	.whereNull("a.r_deleted_at");
+		}
 		// "r_id": 1,
 		// "r_username": "ben",
 		// "r_password": "bd255b71f740860db5c5f23ac3d5ede16d81303dd588657a0d0914d9563d0cbb39abeae3ddff9cbf310188d0e4282ae400d21fb61575b5a9b321f984b0235ce1",
