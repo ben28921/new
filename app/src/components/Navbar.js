@@ -74,7 +74,23 @@ const Navbar = () => {
 										borderRight: "1px solid black",
 									}}
 								>
-									<Typography sx={{ fontWeight: "bold" }}>User</Typography>
+									<Typography sx={{ fontWeight: "bold" }}>User list</Typography>
+								</Grid>
+							</NavItem>
+						</Box>
+
+						<Box>
+							<NavItem to={"/Adduser"}>
+								<Grid
+									container
+									px={7}
+									sx={{
+										alignItems: "center",
+										height: "50px",
+										borderRight: "1px solid black",
+									}}
+								>
+									<Typography sx={{ fontWeight: "bold" }}>Add User</Typography>
 								</Grid>
 							</NavItem>
 						</Box>

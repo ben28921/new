@@ -31,36 +31,34 @@
 
 // export default App;
 
-import { useSelector } from "react-redux";
-
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import TicketDetail from "./pages/TicketDetail";
 import AddTicket from "./pages/AddTicket";
+import AddUser from "./pages/AddUser";
 import User from "./pages/User";
-
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar.js";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
-	const isLoggedIn = useSelector((state) => state.isLoggedIn);
-	console.log(isLoggedIn);
+	// const isLoggedIn = useSelector((state) => state.isLoggedIn);
+	// console.log(isLoggedIn);
 	return (
 		<div>
 			{/* <Login /> */}
 
-			<section>
-				<Routes>
-					{/* <Route index element={<App />} /> */}
+			{/* <section> */}
+			<Routes>
+				{/* <Route index element={<App />} /> */}
 
-					<Route path="/" element={<Login />} />
-					<Route path="login" element={<Login />} />
-					<Route path="home" element={<Home />} />
-					<Route path="posts/:id" element={<TicketDetail />} />
-					<Route path="addTicket" element={<AddTicket />} />
-					<Route path="user" element={<User />} />
-				</Routes>
-			</section>
+				<Route path="/" element={<Login />} />
+				<Route path="login" element={<Login />} />
+				<Route path="home" element={<Home />} />
+				<Route path="posts/:id" element={<TicketDetail />} />
+				<Route path="addTicket" element={<AddTicket />} />
+				<Route path="user" element={<User />} />
+				<Route path="addUser" element={<AddUser />} />
+			</Routes>
+			{/* </section> */}
 		</div>
 	);
 }
